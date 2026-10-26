@@ -1,0 +1,747 @@
+<div class="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased selection:bg-amber-500 selection:text-slate-950 flex flex-col">
+  <!--GLOBAL TOAST NOTIFICATION-->
+  toast && (
+  <div class="fixed top-5 right-5 z-50 bg-amber-500 text-slate-950 px-5 py-3 rounded-xl shadow-2xl font-bold flex items-center gap-2 animate-bounce">
+    <Sparkles class="w-5 h-5"></Sparkles>
+    <span></span>
+  </div>
+  )
+  <!--PERSISTENT FLOATING HELPLINE WIDGETS-->
+  <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+    <a href="https://wa.me/8801823020470" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center transition-all transform hover:scale-110 border border-emerald-400" title="WhatsApp Helpline: 01823020470">
+      <MessageSquare class="w-6 h-6"></MessageSquare>
+    </a>
+    <a href="https://t.me/crsaaadmin03" target="_blank" rel="noopener noreferrer" class="bg-sky-600 hover:bg-sky-500 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center transition-all transform hover:scale-110 border border-sky-400" title="Telegram Helpline: @crsaaadmin03">
+      <Phone class="w-6 h-6"></Phone>
+    </a>
+  </div>
+  <!--TOP HEADER-->
+  <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-amber-500/20 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="bg-gradient-to-tr from-amber-600 to-amber-400 text-slate-950 p-2 rounded-xl font-black text-xl tracking-wider shadow-lg">
+          TRCP
+        </div>
+        <div>
+          <h1 class="text-lg font-black text-amber-400 tracking-wide"></h1>
+          <p class="text-xs text-slate-400 hidden sm:block"></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!--Language Switcher-->
+        <button class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all">
+          <Globe class="w-3.5 h-3.5"></Globe>
+          <span></span>
+        </button>
+        <!--Admin Portal Toggle Button-->
+        !isAdminLoggedIn ? (
+        <button class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white p-2 rounded-lg border border-slate-700 text-xs flex items-center gap-1" title="Admin Login">
+          <Lock class="w-3.5 h-3.5 text-amber-400"></Lock>
+          <span class="hidden md:inline"></span>
+        </button>
+        ) : (
+        <button class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/40 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
+          <LogOut class="w-3.5 h-3.5"></LogOut>
+          <span>
+            Exit Admin
+          </span>
+        </button>
+        )
+        <!--Client User Info / Logout-->
+        currentUser && (
+        <div class="flex items-center gap-2 pl-2 border-l border-slate-800">
+          <div class="text-right text-xs hidden md:block">
+            <p class="font-bold text-amber-300"></p>
+            <p class="text-slate-400 text-[10px]"></p>
+          </div>
+          <button class="bg-slate-800 text-slate-400 hover:text-white p-2 rounded-lg">
+            <LogOut class="w-4 h-4"></LogOut>
+          </button>
+        </div>
+        )
+      </div>
+    </div>
+  </header>
+  <!--NAVIGATION BAR-->
+  <nav class="bg-slate-900 border-b border-slate-800 sticky top-[61px] z-20">
+    <div class="max-w-7xl mx-auto flex items-center justify-around sm:justify-start gap-1 sm:gap-4 px-2 py-2 overflow-x-auto">
+      <button>
+        <MapPin class="w-4 h-4"></MapPin>
+        <span></span>
+      </button>
+      <button>
+        <Video class="w-4 h-4"></Video>
+        <span></span>
+      </button>
+      <button>
+        <Sparkles class="w-4 h-4"></Sparkles>
+        <span></span>
+      </button>
+      currentUser && (
+      <button>
+        <Clock class="w-4 h-4"></Clock>
+        <span></span>
+      </button>
+      )
+
+          isAdminLoggedIn && (
+      <button>
+        <Shield class="w-4 h-4"></Shield>
+        <span></span>
+      </button>
+      )
+    </div>
+  </nav>
+  <!--MAIN CONTAINER-->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
+    <!--CLIENT AUTHENTICATION BANNER / MODAL IF NOT LOGGED IN-->
+    !currentUser && activeTab !== 'admin' && (
+    <div class="mb-8 max-w-md mx-auto bg-slate-900 border border-amber-500/30 p-6 rounded-2xl shadow-2xl">
+      <div class="flex border-b border-slate-800 mb-6">
+        <button>
+        </button>
+        <button>
+        </button>
+      </div>
+      authError && (
+      <div class="mb-4 bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-xl text-xs flex items-center gap-2">
+        <AlertCircle class="w-4 h-4 shrink-0"></AlertCircle>
+        <span></span>
+      </div>
+      )
+      <form class="space-y-4">
+        authMode === 'register' && (
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1"></label>
+          <div class="relative">
+            <User class="w-4 h-4 absolute left-3 top-3 text-slate-500"></User>
+            <input type="text" required placeholder="e.g. Rahim Uddin" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none">
+          </div>
+        </div>
+        )
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1"></label>
+          <div class="relative">
+            <Phone class="w-4 h-4 absolute left-3 top-3 text-slate-500"></Phone>
+            <input type="tel" required placeholder="01XXXXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1"></label>
+          <div class="relative">
+            <Lock class="w-4 h-4 absolute left-3 top-3 text-slate-500"></Lock>
+            <input type="password" maxlength="4" required placeholder="****" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none">
+          </div>
+        </div>
+        <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold py-3 rounded-xl shadow-lg transition-all">
+        </button>
+      </form>
+    </div>
+    )
+    <!--LOGGED IN CLIENT CONTENT-->
+    currentUser && (
+    <div>
+      <!--1. REAL SERVICE PORTAL-->
+      activeTab === 'real' && (
+      <RealServicePortal></RealServicePortal>
+      )
+      <!--2. VIDEO SERVICE PORTAL-->
+      activeTab === 'video' && (
+      <VideoServicePortal></VideoServicePortal>
+      )
+      <!--3. LIVE SHOW PORTAL-->
+      activeTab === 'live' && (
+      <LiveShowPortal></LiveShowPortal>
+      )
+      <!--4. CLIENT BOOKING HISTORY-->
+      activeTab === 'myBookings' && (
+      <ClientBookingHistory></ClientBookingHistory>
+      )
+    </div>
+    )
+    <!--5. ADMIN DASHBOARD-->
+    activeTab === 'admin' && isAdminLoggedIn && (
+    <AdminDashboard></AdminDashboard>
+    )
+  </main>
+  <!--FOOTER-->
+  <footer class="bg-slate-900 border-t border-slate-800 py-6 px-4 text-center text-xs text-slate-500 mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>
+        ©  TRCP AGENCY. All Rights Reserved.
+      </p>
+      <div class="flex items-center gap-4 text-slate-400">
+        <span>
+          WhatsApp: 01823020470
+        </span>
+        <span>
+          Telegram: @crsaaadmin03
+        </span>
+      </div>
+    </div>
+  </footer>
+  <!--HIDDEN STRICT ADMIN LOGIN MODAL-->
+  showAdminModal && (
+  <div class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-500/40 rounded-2xl p-6 max-w-sm w-full shadow-2xl relative">
+      <button class="absolute top-4 right-4 text-slate-500 hover:text-white">
+        ✕
+      </button>
+      <div class="flex items-center gap-3 mb-4">
+        <Shield class="w-6 h-6 text-amber-400"></Shield>
+        <h3 class="font-bold text-lg text-white"></h3>
+      </div>
+      <form class="space-y-4">
+        <div>
+          <label class="block text-xs text-slate-400 mb-1"></label>
+          <input type="tel" required placeholder="019XXXXXXXX" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm focus:border-amber-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1"></label>
+          <input type="password" required placeholder="******" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm focus:border-amber-500 focus:outline-none">
+        </div>
+        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-sm shadow-lg transition-all">
+          Unlock Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+  )
+  <!--GALLERY PHOTO CAROUSEL SLIDER MODAL-->
+  carouselMedia && (
+  <div class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative max-w-2xl w-full bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
+      <button class="absolute top-4 right-4 z-10 bg-slate-950/70 text-white p-2 rounded-full hover:bg-red-600 transition-all">
+        ✕
+      </button>
+      <div class="relative h-96 bg-black flex items-center justify-center">
+        carouselMedia.photos && carouselMedia.photos.length > 0 ? (
+        <img alt="Gallery Slide" class="max-h-full max-w-full object-contain">
+        ) : (
+        <div class="text-slate-500 flex flex-col items-center gap-2">
+          <Image class="w-12 h-12"></Image>
+          <span>
+            No Photos Uploaded
+          </span>
+        </div>
+        )
+        <!--Navigation Arrows-->
+        carouselMedia.photos && carouselMedia.photos.length > 1 && (
+        <button class="absolute left-4 bg-slate-950/60 hover:bg-amber-500 hover:text-slate-950 text-white p-3 rounded-full transition-all">
+          <ChevronLeft class="w-6 h-6"></ChevronLeft>
+        </button>
+        <button class="absolute right-4 bg-slate-950/60 hover:bg-amber-500 hover:text-slate-950 text-white p-3 rounded-full transition-all">
+          <ChevronRight class="w-6 h-6"></ChevronRight>
+        </button>
+        )
+      </div>
+      <!--Thumbnail Navigation-->
+      carouselMedia.photos && carouselMedia.photos.length > 1 && (
+      <div class="p-4 bg-slate-950 flex items-center justify-center gap-2 overflow-x-auto">
+        carouselMedia.photos.map((url, idx) => (
+        <button>
+          <img alt="thumb" class="w-full h-full object-cover">
+        </button>
+        ))
+      </div>
+      )
+    </div>
+  </div>
+  )
+</div>
+);
+}
+
+// ==========================================
+// 1. REAL SERVICE PORTAL COMPONENT
+// ==========================================
+function RealServicePortal() const [selectedMainLoc, setSelectedMainLoc] = useState(locations[0]?.id || '');
+  const [selectedSubArea, setSelectedSubArea] = useState('');
+  const [selectedDate, setSelectedDate] = useState(next10Days[0]?.iso || '');
+  const [selectedCollection, setSelectedCollection] = useState(null);
+  const [selectedDuration, setSelectedDuration] = useState('1 Hour');
+  
+  // Checkout Modal State
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('bkash');
+  const [trxType, setTrxType] = useState('sendMoney');
+  const [trxScreenshot, setTrxScreenshot] = useState('');
+  const [last4Digits, setLast4Digits] = useState('');
+
+  const currentMainObj = locations.find(l => l.id === selectedMainLoc);
+
+  useEffect(() => , [selectedMainLoc]);
+
+  const allocatedCols = useMemo(() => , [selectedSubArea, selectedDate, collections]);
+
+  // Pricing Matrix Logic
+  const getRate = (category, duration) => ;
+
+  const totalRate = selectedCollection?.customRates?.[selectedDuration] || getRate(selectedCollection?.category, selectedDuration);
+
+  // ADVANCE CALCULATION RULE
+  // If Total == 2000 => 50% advance (1000)
+  // If Total > 2000 => Fixed 1230 BDT advance
+  const advanceAmount = totalRate === 2000 ? 1000 : (totalRate > 2000 ? 1230 : totalRate);
+  const dueAmount = totalRate - advanceAmount;
+
+  const handleBookingSubmit = (e) => ;
+
+  return (
+<div class="space-y-6">
+  <!--SELECTION BAR-->
+  <div class="bg-slate-900 border border-slate-800 p-4 sm:p-6 rounded-2xl shadow-xl space-y-4">
+    <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+      <MapPin class="w-5 h-5"></MapPin>
+      <span>
+        -
+      </span>
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <!--Main Area Dropdown-->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1"></label>
+        <select class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none">
+          locations.map(loc => (
+          <option></option>
+          ))
+        </select>
+      </div>
+      <!--Sub Area Dropdown-->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1"></label>
+        <select class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none">
+          currentMainObj?.subAreas.map(sub => (
+          <option>
+            ()
+          </option>
+          ))
+        </select>
+      </div>
+      <!--Date Selector-->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1"></label>
+        <select class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none">
+          next10Days.map(d => (
+          <option></option>
+          ))
+        </select>
+      </div>
+    </div>
+  </div>
+  <!--AVAILABLE COLLECTIONS GRID-->
+  <div>
+    <h3 class="text-md font-bold text-slate-300 mb-4 flex items-center gap-2">
+      <Sparkles class="w-4 h-4 text-amber-400"></Sparkles>
+      <span>
+        ()
+      </span>
+    </h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      allocatedCols.map(col => (
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl hover:border-amber-500/40 transition-all flex flex-col">
+        <!--Photo Slider Thumbnail-->
+        <div class="relative h-64 bg-slate-950 cursor-pointer group">
+          col.photos && col.photos.length > 0 ? (
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300">
+          ) : (
+          <div class="w-full h-full flex items-center justify-center text-slate-600">
+            <Image class="w-10 h-10"></Image>
+          </div>
+          )
+          <div class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-black text-amber-400 border border-amber-500/30">
+            CODE:
+          </div>
+          col.photos && col.photos.length > 1 && (
+          <div class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2 py-1 rounded-lg text-[10px] text-white flex items-center gap-1">
+            <Image class="w-3 h-3"></Image>
+            <span>
+              + photos
+            </span>
+          </div>
+          )
+        </div>
+        <!--Profile Meta-->
+        <div class="p-4 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-white text-base"></h4>
+              <span class="text-[10px] px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 font-semibold border border-amber-500/20">
+              </span>
+            </div>
+          </div>
+          <button class="w-full mt-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-1">
+            <span>
+              Book Now / বুক করুন
+            </span>
+            <ChevronRight class="w-4 h-4"></ChevronRight>
+          </button>
+        </div>
+      </div>
+      ))
+    </div>
+  </div>
+  <!--BOOKING CHECKOUT MODAL-->
+  showCheckout && selectedCollection && (
+  <CheckoutModal serviceType="Real Service"></CheckoutModal>
+  )
+</div>
+);
+
+// ==========================================
+// 2. VIDEO SERVICE PORTAL COMPONENT
+// ==========================================
+function VideoServicePortal() const [selectedCategory, setSelectedCategory] = useState('Medium');
+  const [selectedDuration, setSelectedDuration] = useState('10 Mins');
+  const [selectedCollection, setSelectedCollection] = useState(null);
+
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('bkash');
+  const [trxType, setTrxType] = useState('sendMoney');
+  const [trxScreenshot, setTrxScreenshot] = useState('');
+  const [last4Digits, setLast4Digits] = useState('');
+
+  // Video Services Available Today Filter
+  const filteredCols = collections.filter(c => c.isAvailableTodayVideo && c.category === selectedCategory);
+
+  const getVideoRate = (cat, dur) => ;
+
+  const totalRate = selectedCollection?.customRates?.[selectedDuration] || getVideoRate(selectedCategory, selectedDuration);
+
+  // VIDEO SERVICE REQUIRE 100% ONLINE PAYMENT ADVANCE
+  const advanceAmount = totalRate;
+  const dueAmount = 0;
+
+  const handleBookingSubmit = (e) => ;
+
+  return (
+<div class="space-y-6">
+  <div class="bg-slate-900 border border-slate-800 p-4 sm:p-6 rounded-2xl shadow-xl space-y-4">
+    <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+      <Video class="w-5 h-5"></Video>
+      <span></span>
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">
+          ক্যাটাগরি নির্বাচন করুন
+        </label>
+        <select class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none">
+          <option value="Medium">
+            Medium Category (Code 01-100)
+          </option>
+          <option value="Premium">
+            Premium Category (Code 101-200)
+          </option>
+          <option value="New Special Collection">
+            New Collection (Code 301-399)
+          </option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">
+          সময়কাল নির্বাচন করুন
+        </label>
+        <select class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none">
+          <option value="10 Mins">
+            10 Mins (Face + Fingering)
+          </option>
+          <option value="20 Mins">
+            20 Mins (Fingering + Mal Out)
+          </option>
+          <option value="30 Mins">
+            30 Mins (Fingering + Mal Out + Nude Dance)
+          </option>
+          <option value="60 Mins / 1 Hr">
+            60 Mins / 1 Hr (Full Bath Service)
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    filteredCols.map(col => (
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col">
+      <div class="relative h-64 bg-slate-950 cursor-pointer group">
+        col.photos && col.photos.length > 0 ? (
+        <img class="w-full h-full object-cover group-hover:scale-105 transition-all">
+        ) : (
+        <div class="w-full h-full flex items-center justify-center text-slate-600">
+          <Video class="w-10 h-10"></Video>
+        </div>
+        )
+        <div class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-black text-amber-400">
+          CODE:
+        </div>
+      </div>
+      <div class="p-4 flex-1 flex flex-col justify-between">
+        <div>
+          <h4 class="font-bold text-white text-base"></h4>
+          <p class="text-xs text-amber-400 font-bold mt-1">
+            Charge:  BDT (100% Online)
+          </p>
+        </div>
+        <button class="w-full mt-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-1">
+          <span>
+            Select & Pay / পেমেন্ট করুন
+          </span>
+          <ChevronRight class="w-4 h-4"></ChevronRight>
+        </button>
+      </div>
+    </div>
+    ))
+  </div>
+  showCheckout && selectedCollection && (
+  <CheckoutModal serviceType="Video Service"></CheckoutModal>
+  )
+</div>
+);
+
+// ==========================================
+// 3. LIVE SHOW PORTAL COMPONENT
+// ==========================================
+function LiveShowPortal() const [selectedService, setSelectedService] = useState(services[0] || null);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('bkash');
+  const [trxType, setTrxType] = useState('sendMoney');
+  const [trxScreenshot, setTrxScreenshot] = useState('');
+  const [last4Digits, setLast4Digits] = useState('');
+
+  const liveServices = services.filter(s => s.type === 'live' || s.type === 'membership');
+
+  const handleBookingSubmit = (e) => ;
+
+  return (
+<div class="space-y-6">
+  <div class="text-center max-w-xl mx-auto py-4">
+    <Sparkles class="w-12 h-12 text-amber-400 mx-auto mb-2"></Sparkles>
+    <h2 class="text-2xl font-black text-white">
+      Packages
+    </h2>
+    <p class="text-xs text-slate-400 mt-1">
+    </p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+    liveServices.map(srv => (
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-amber-500/50 transition-all shadow-xl">
+      <div>
+        <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+        </span>
+        <h3 class="text-xl font-black text-white mt-4"></h3>
+        <p class="text-3xl font-extrabold text-amber-400 mt-4">
+          <span class="text-xs text-slate-400">
+            BDT
+          </span>
+        </p>
+      </div>
+      <button class="mt-6 w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3 rounded-xl shadow-lg transition-all">
+        Subscribe Now
+      </button>
+    </div>
+    ))
+  </div>
+  showCheckout && selectedService && (
+  <CheckoutModal serviceType="Live Show Package" dueAmount="0"></CheckoutModal>
+  )
+</div>
+);
+
+// ==========================================
+// COMMON CHECKOUT MODAL COMPONENT
+// ==========================================
+function CheckoutModal() const [copied, setCopied] = useState(false);
+
+  const activeNumber = settings[paymentMethod] || '01847257668';
+
+  const handleCopyNumber = () => ;
+
+  const handleFileChange = (e) => ;
+
+  return (
+<div class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+  <div class="bg-slate-900 border border-amber-500/30 rounded-2xl p-6 max-w-lg w-full shadow-2xl my-8 relative">
+    <button class="absolute top-4 right-4 text-slate-500 hover:text-white">
+      ✕
+    </button>
+    <h3 class="font-bold text-lg text-amber-400 mb-1">
+      - Checkout
+    </h3>
+    <p class="text-xs text-slate-400 mb-4">
+      Code:  |
+    </p>
+    <!--Pricing Summary Box-->
+    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 mb-4">
+      <div class="flex justify-between text-xs text-slate-400">
+        <span>
+          :
+        </span>
+        <span class="font-bold text-white"></span>
+      </div>
+      <div class="flex justify-between text-xs text-slate-400">
+        <span>
+          :
+        </span>
+        <span class="font-bold text-amber-400">
+          BDT
+        </span>
+      </div>
+      <div class="flex justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
+        <span class="text-amber-400 font-bold">
+          :
+        </span>
+        <span class="font-black text-amber-400 text-sm">
+          BDT
+        </span>
+      </div>
+      dueAmount > 0 && (
+      <div class="flex justify-between text-xs text-slate-400">
+        <span>
+          :
+        </span>
+        <span class="font-bold text-emerald-400">
+          BDT
+        </span>
+      </div>
+      )
+    </div>
+    <form class="space-y-4">
+      <!--Payment Method Selector-->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-2">
+          পেমেন্ট মেথড সিলেক্ট করুন
+        </label>
+        <div class="grid grid-cols-3 gap-2">
+          ['bkash', 'nagad', 'rocket'].map(m => (
+          <button type="button">
+          </button>
+          ))
+        </div>
+      </div>
+      <!--Payment Number Display with Copy Button-->
+      <div class="bg-slate-950 border border-amber-500/30 p-3.5 rounded-xl flex items-center justify-between">
+        <div>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider">
+            Cashier Number
+          </p>
+          <p class="text-base font-black text-amber-400"></p>
+        </div>
+        <button type="button" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5">
+          copied ?
+          <Check class="w-3.5 h-3.5"></Check>
+          :
+          <Copy class="w-3.5 h-3.5"></Copy>
+          <span></span>
+        </button>
+      </div>
+      <!--Payment Instructions Notice-->
+      <div class="bg-amber-500/10 border border-amber-500/30 text-amber-300 p-3 rounded-xl text-xs space-y-1">
+        <p class="font-bold flex items-center gap-1.5">
+          <AlertTriangle class="w-4 h-4 text-amber-400 shrink-0"></AlertTriangle>
+          <span></span>
+        </p>
+        <p class="text-[11px] text-slate-300">
+          বরাবর
+          <strong class="text-amber-400">
+            BDT
+          </strong>
+          সেন্ড মানি অথবা ক্যাশ ইন করুন।
+        </p>
+      </div>
+      <!--Transaction Type Options-->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-2"></label>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button">
+          </button>
+          <button type="button">
+          </button>
+        </div>
+      </div>
+      <!--File Upload OR Last 4 Digits Input-->
+      trxType === 'sendMoney' ? (
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1"></label>
+        <input type="file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400">
+        trxScreenshot && (
+        <div class="mt-2 h-20 w-20 rounded-lg overflow-hidden border border-amber-500/40">
+          <img alt="preview" class="w-full h-full object-cover">
+        </div>
+        )
+      </div>
+      ) : (
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1"></label>
+        <input type="text" maxlength="4" placeholder="e.g. 4821" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none">
+      </div>
+      )
+      <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3 rounded-xl shadow-lg transition-all text-sm">
+      </button>
+      <p class="text-[11px] text-slate-500 text-center">
+      </p>
+    </form>
+  </div>
+</div>
+);
+
+// ==========================================
+// 4. CLIENT BOOKING HISTORY COMPONENT
+// ==========================================
+function ClientBookingHistory() const myBookings = bookings.filter(b => b.userId === currentUser.id);
+
+  return (
+<div class="space-y-6">
+  <h2 class="text-xl font-black text-amber-400 flex items-center gap-2">
+    <Clock class="w-6 h-6"></Clock>
+    <span>
+      ()
+    </span>
+  </h2>
+  myBookings.length === 0 ? (
+  <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center text-slate-500">
+    আপনার কোনো বুকিং রেকর্ড পাওয়া যায়নি।
+  </div>
+  ) : (
+  <div class="space-y-4">
+    myBookings.map(bk => (
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="font-bold text-white text-base">
+            - Code:
+          </span>
+          <span>
+          </span>
+        </div>
+        <div class="text-xs text-slate-400 space-y-0.5">
+          <p>
+            Profile:  | Duration:
+          </p>
+          bk.mainArea &&
+          <p>
+            Location:  () - Place:
+          </p>
+          <p>
+            Date:
+          </p>
+          <p class="text-amber-400">
+            Advance Paid:  BDT | Hand Cash Due:  BDT
+          </p>
+        </div>
+      </div>
+      <div class="text-right text-xs text-slate-500 shrink-0">
+        <p>
+          Booking ID:
+        </p>
+        <p></p>
+      </div>
+    </div>
+    ))
+  </div>
+  )
+</div>
+);
+
+// ==========================================
+// 5. ADMIN DASHBOARD COMPONENT
+// ==========================================
+function AdminDashboard()
